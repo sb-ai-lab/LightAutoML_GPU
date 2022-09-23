@@ -1,0 +1,85 @@
+[tool.poetry]
+name = "LightAutoML_GPU"
+version = "1.0.0"
+description = "Fast and customizable framework for automatic ML model creation (AutoML) on GPU"
+authors = ["Alexander Ryzhkov <AMRyzhkov@sberbank.ru>",
+           "Vakhrushev Anton <AGVakhrushev@sberbank.ru>",
+           "Simakov Dmitrii <Simakov.D.E@sberbank.ru>"]
+readme = "README.md"
+license = "Apache-2.0"
+homepage = "https://github.com/sb-ai-lab/LightAutoML_GPU"
+repository = "https://github.com/sb-ai-lab/LightAutoML_GPU"
+classifiers = [
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Natural Language :: Russian",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed"
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.6.1"
+
+poetry-core = "^1.0.0"
+numpy = "*"
+scipy = "*"
+pandas = ">=1"
+scikit-learn = ">=0.22"
+lightgbm = "^2.3"
+optuna = "*"
+torch = ">=1.6"
+holidays = "*"
+networkx = "*"
+cmaes = "*"
+log-calls = "*"
+pyyaml = "*"
+
+autowoe = ">=1.2"
+
+json2html = "*"
+jinja2 = "*"
+seaborn = "*"
+
+transformers = ">=4"
+nltk = "*"
+gensim = "*"
+tqdm = "*"
+efficientnet-pytorch = "*"
+albumentations = ">=0.4.6"
+opencv-python = "*"
+joblib = "*"
+pywavelets = "*"
+scikit-image = "*"
+torchvision = "*"
+
+webencodings = "*"
+
+importlib-metadata = {version = "^1.0", python = "<3.8"}
+weasyprint = {version = "^52.5", optional = true}
+cffi = {version = "^1.14.5", optional = true}
+
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+IPython = "*"
+nbsphinx = "*"
+nbsphinx-link = "*"
+sphinx-autodoc-typehints = "*"
+pandoc = "*"
+
+
+[tool.poetry.extras]
+pdf = ["weasyprint", "cffi"]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
