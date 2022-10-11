@@ -18,7 +18,7 @@ conda activate lama_venv
 
 2. To clone the project to your own local machine:
 ```bash
-git clone https://github.com/Rishat-skoltech/LightAutoML_GPU.git
+git clone https://github.com/sb-ai-lab/LightAutoML_GPU.git
 cd LightAutoML_GPU
 ```
 
