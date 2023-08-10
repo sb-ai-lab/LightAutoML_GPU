@@ -307,7 +307,8 @@ class BoostXGB(TabularMLAlgoGPU, ImportanceEstimator):
         dataset_data = dataset.data
         if type(dataset) == DaskCudfDataset:
             dataset_data = dataset_data.compute()
-        dev_id = model.__dict__.pop("gpu_id")
+        # dev_id = model.__dict__.pop("gpu_id")
+        dev_id = model.gpu_id
         with cp.cuda.Device(dev_id):
             if type(dataset_data) == cudf.DataFrame:
                 dataset_data = dataset_data.copy()
@@ -320,6 +321,7 @@ class BoostXGB(TabularMLAlgoGPU, ImportanceEstimator):
                     + "class:"
                     + str(self._name)
                 )
+        
         pred = self.task.losses["xgb"].bw_func(model.inplace_predict(dataset_data))
 
         return pred

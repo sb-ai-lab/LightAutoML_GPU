@@ -242,7 +242,7 @@ def _get_score_from_pipe_gpu(
     if pipe is not None:
         train = pipe.fit_transform(train)
 
-    train = train.to_numpy()
+    train = train.to_cupy()
     data = train.data
     new_len = data.shape[1]
 
@@ -252,12 +252,13 @@ def _get_score_from_pipe_gpu(
         orig_len = len(empty_slice.columns)
         empty_slice = empty_slice.values
 
-    empty_slice = cp.asnumpy(empty_slice)
+    empty_slice = cp.asarray(empty_slice)
     len_ratio = int(new_len / orig_len)
-    target = cp.asnumpy(target)
+    target = cp.asarray(target)
     data = data.reshape((data.shape[0], orig_len, len_ratio))
 
-    scores = calc_ginis(data, target, empty_slice)
+    scores = calc_ginis_gpu(data, target, empty_slice)
+    
     return scores
 
 
@@ -360,7 +361,8 @@ def get_score_from_pipe_gpu(
         np.ndarray.
 
     """
-    if n_jobs == 1:
+    # if n_jobs == 1:
+    if True:
         return _get_score_from_pipe_gpu(train, target, pipe, empty_slice)
 
     idx = np.array_split(np.arange(len(train.features)), n_jobs)
@@ -445,7 +447,7 @@ def get_numeric_roles_stat_gpu(
     # check scores as is
     res["raw_scores"] = get_score_from_pipe_gpu(
         train, target, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     # check unique values
     unique_values = None
     top_freq_values = None
@@ -466,7 +468,7 @@ def get_numeric_roles_stat_gpu(
     trf = SequentialTransformer([QuantileBinningGPU(), encoder()])
     res["binned_scores"] = get_score_from_pipe_gpu(
         train, target, pipe=trf, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     # check label encoded scores
     trf = SequentialTransformer(
         [ChangeRoles(CategoryRole(np.float32)), LabelEncoderGPU(), encoder()]
@@ -474,7 +476,7 @@ def get_numeric_roles_stat_gpu(
 
     res["encoded_scores"] = get_score_from_pipe_gpu(
         train, target, pipe=trf, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     # check frequency encoding
     trf = SequentialTransformer(
         [ChangeRoles(CategoryRole(np.float32)), FreqEncoderGPU()]
@@ -482,7 +484,7 @@ def get_numeric_roles_stat_gpu(
 
     res["freq_scores"] = get_score_from_pipe_gpu(
         train, target, pipe=trf, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     if isinstance(empty_slice, cudf.DataFrame):
         res["nan_rate"] = empty_slice.mean(axis=0).values_host
     else:

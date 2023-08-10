@@ -768,11 +768,12 @@ class ReportDeco:
         """
         self._n_test_sample += 1
         # get predictions
-        test_preds = cp.asnumpy(self._model.predict(*args, **kwargs))
+        test_preds = self._model.predict(*args, **kwargs)
 
-        test_data = (
-            cp.asnumpy(kwargs["test"]) if "test" in kwargs else cp.asnumpy(args[0])
-        )
+#         test_data = (
+#             cp.asnumpy(kwargs["test"]) if "test" in kwargs else cp.asnumpy(args[0])
+#         )
+        test_data = kwargs["test"] if "test" in kwargs else args[0]
         data = self._collect_data(test_preds, test_data)
 
         if self.task == "binary":
