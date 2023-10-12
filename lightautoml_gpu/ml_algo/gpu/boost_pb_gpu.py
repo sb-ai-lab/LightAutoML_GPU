@@ -59,7 +59,7 @@ class BoostPB(TabularMLAlgoGPU, ImportanceEstimator):
         "min_data_in_bin": 3,
         "es": 100,
         "seed": 42,
-        "verbose": 10
+        "verbose": 100
     }
 
     def _infer_params(
@@ -165,7 +165,7 @@ class BoostPB(TabularMLAlgoGPU, ImportanceEstimator):
 
         val_data = train_valid_iterator.get_validation_data().empty()
         outp_dim = val_data.target.shape[1]
-        suggested_params["n_classes"] = outp_dim
+        # suggested_params["n_classes"] = outp_dim
 
         return suggested_params
 

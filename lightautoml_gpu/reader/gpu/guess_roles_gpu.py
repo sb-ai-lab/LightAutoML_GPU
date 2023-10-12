@@ -554,17 +554,17 @@ def get_category_roles_stat_gpu(
     trf = SequentialTransformer([LabelEncoderGPU(), encoder()])
     res["encoded_scores"] = get_score_from_pipe_gpu(
         train, target, pipe=trf, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     # check frequency encoding
     trf = FreqEncoderGPU()
     res["freq_scores"] = get_score_from_pipe_gpu(
         train, target, pipe=trf, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     # check ordinal encoding
     trf = OrdinalEncoderGPU()
     res["ord_scores"] = get_score_from_pipe_gpu(
         train, target, pipe=trf, empty_slice=empty_slice, n_jobs=n_jobs
-    )
+    ).get()
     return res, dtypes
 
 

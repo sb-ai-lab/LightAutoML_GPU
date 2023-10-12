@@ -187,7 +187,6 @@ class MLPipeline:
         ), "Pipeline finished with 0 models for some reason.\nProbably one or more models failed"
 
         predictions = concatenate(predictions)
-
         del self._ml_algos
         return predictions
 
